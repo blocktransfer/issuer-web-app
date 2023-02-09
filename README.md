@@ -86,6 +86,15 @@
   - New special meeting
 - Global entity share management (Board spread across var. firms)
 
+## Settings ## 
+- Manage company information
+- §270.17a-7 transactions (from Treasury)
+- Manage affiliates
+- Access users
+  - Should be able to search through their shareholders to add someone as an access user (tbd, hardware auth here vs app access)
+  - e.g. they could get a popup on their phone app, and review/sign everything with their local key
+  - circle around on this once Vikas plays around more with hardware auth
+
 ## Future Desired Things ##
 - Stock options
 - Vesting data
