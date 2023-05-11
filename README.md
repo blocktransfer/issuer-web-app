@@ -1,4 +1,8 @@
-## Dashboard ##
+## Issuer Portal
+
+### [**Figma Link**](https://www.figma.com/file/EZWR86B1mR2oGExHe9Jib5/Issuer-Portal)
+
+#### Dashboard
 - Capital breakdown
   - Outstanding shares
     - Unrestricted shares
@@ -14,7 +18,7 @@
 - Market data about stock
 - SEC filings
 
-## Reports ##
+#### Reports
 - Capital breakdown (assuming some kind of query + PDF output in real time)
 - Insider trading reports
 - Geographic investor trends
@@ -22,21 +26,21 @@
 - Share capital breakdown
   - Offerings?
 
-## Activity ##
+#### Activity
 - Shares to/from brokers vs. DRS
 - (For us) Actual DRS activity
   - Direct transfers
   - Private sales (all report I guess)
   - Claimed restricted/vested stock?
 
-## Holders ##
+#### Holders
 - Search all / full list
   - Sounds like what we have rn at issuersbeta.blocktransfer.io
 - Future potential: analytics
   - Someone sell your stock and buy co. in same industry 
   - Trends? 
 
-## Voting ##
+#### Voting
 - Meeting Management
   - Show / set:
     - meeting date
@@ -50,7 +54,7 @@
     - plain-English company name
 - (For us) Live proxy results
 
-## Tools ##
+#### Tools
 - File sharing
 - Messaging
 - Issue shares
@@ -73,12 +77,12 @@
 - Deposit/withdraw from broker (for us: perhaps redundant and ignore given auto DWAC via SEP6/FIRE server)
 - Import list of brokerage investors to add to DRS dataset for analytics (future feature?)
 
-## Help ##
+#### Help
 - FAQs
 - Guides
 - Support communication
 
-## Governance ##
+#### Governance
 - Generate insider trading report
 - Board communications
   - Upload annual report
@@ -86,7 +90,7 @@
   - New special meeting
 - Global entity share management (Board spread across var. firms)
 
-## Settings ## 
+#### Settings
 - Manage company information
 - §270.17a-7 transactions (from Treasury)
 - Manage affiliates
@@ -95,13 +99,13 @@
   - e.g. they could get a popup on their phone app, and review/sign everything with their local key
   - circle around on this once Vikas plays around more with hardware auth
 
-## Future Desired Things ##
+#### Future Desired Things
 - Stock options
 - Vesting data
 - Investors to have accounts they can log in on an app to see share balances / vesting schedule & history
 - Easy TA support so that the investors don't call the company
 
-### Misc Proxy Notes ###
+**Misc Proxy Notes**
 Broker search
 - T-64  Request text for message box in email template
 - T-60  Record date
@@ -116,7 +120,7 @@ Broker search
 - T-1   Send day-prior vote results
 - T     Send final vote results
 
-### automated form 8949 side ###
+#### automated form 8949 info
 - https://medium.com/@zwinny/filling-pdf-forms-in-python-the-right-way-eb9592e03dba
 - https://www.blog.pythonlibrary.org/2018/05/22/filling-pdf-forms-with-python/
 - https://akdux.com/python/2020/10/31/python-fill-pdf-files/
@@ -124,7 +128,7 @@ Broker search
 - https://pypi.org/project/fillpdf/
 - https://www.securexfilings.com/wp-content/uploads/2013/04/sched13d.pdf
 
-## Affiliate Voting
+### Affiliate Voting - see custody notes
 - implement the transfer server and credentials updates via lambda calls with the actual pii easily dispersed in dynamo
 - For counting affiliate votes, we can also do indefinite returnable CBs from AFF*affiliate.holdings to AFFs (which net to zero in affiliate.holdings), and the issuer could easily manage changes on that side themselves (to/from brokers with auto-rep letters) for Rule 144/Section 10 reporting on their side themselves (prevents us from needing their CCC)
 - (parallel to scanning for standard avaliable to claim restricted stock which is legally granted and votable) (edited) 
