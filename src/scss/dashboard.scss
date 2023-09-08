@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800&display=swap');
+
+// Bootstrap mixins and functions
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/functions";
+
+// Change variables here
+@import "dashboard/variables";
+
+// Bootstrap
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// // Vendor
+@import "dashboard/vendor";
+
+// volt mixins & functions
+@import "dashboard/mixins";
+@import "dashboard/functions";
+
+// Utilities
+@import "dashboard/reboot";
+@import "dashboard/utilities";
+
+// Layout
+@import "dashboard/layout";
+
+// Components
+@import "dashboard/components";
+
+// write your custom styles here!
+@import "dashboard/widgets";

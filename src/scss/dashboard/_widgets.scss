@@ -1,0 +1,75 @@
+.fixed-stat {
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.flag {
+    height: 25px;
+}
+
+.bold-name {
+    font-weight:bold;
+}
+
+.centered-button {
+    display: block;
+    width: auto;
+    margin: 0 auto;
+    white-space: nowrap;
+}
+
+.login-header {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.login-container {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.holder-header {
+    display: flex;
+}
+
+.left-search-bar, .center-holder-title, .right-download {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.left-search-bar > form {
+    margin-right: auto;
+}
+
+.right-download > button {
+    margin-left: auto;
+}
+
+.pagination {
+    margin: auto;
+}
+
+.chart-container {
+    width: 100%;
+    height: 100%;
+}
+
+.chart {
+    flex:1 1 0;
+    overflow:hidden;
+    width:300px;
+}
+
+#holder-col {
+    max-width: 50%;
+}
