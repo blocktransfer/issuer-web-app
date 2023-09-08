@@ -4,7 +4,7 @@ import SimpleBar from 'simplebar-react';
 import { useLocation } from "react-router-dom";
 import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook, faBoxOpen, faChartPie, faCog, faFileAlt, faHandHoldingUsd, faSignOutAlt, faTable, faTimes, faCalendarAlt, faMapPin, faInbox, faRocket } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faWarehouse, faPeopleArrows, faScroll } from "@fortawesome/free-solid-svg-icons";
 import { Nav, Badge, Image, Button, Dropdown, Accordion, Navbar } from '@themesberg/react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -85,6 +85,23 @@ export default (props = {}) => {
               </Nav.Link>
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
+              <NavItem 
+                title="Dashboard"
+                link={Routes.Dashboard.path}
+                icon={faWarehouse}
+              />
+
+              <NavItem 
+                title="Investors"
+                link={Routes.Investors.path}  
+                icon={faPeopleArrows} 
+              />
+
+              <NavItem
+                title="Activity"
+                link={Routes.Activity.path}
+                icon={faScroll}
+              />
             </Nav>
           </div>
         </SimpleBar>
