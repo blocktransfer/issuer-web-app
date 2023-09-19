@@ -21,16 +21,12 @@ const STREET_NAME_ACCOUNTS = [
     "GAQKSRI4E5643UUUMJT4RWCZVLY25TBNZXDME4WLRIF5IPOLTLV7N4N6" // Cede & Co.
 ];
 
-const MICR_DIR = path.join(__dirname, "../../master-identity-catalog-records");
-
-const MICR_TXT = MICR_DIR + "/master-identity-account-mapping.txt";
-
 const BT_API_SERVER = "https://api.blocktransfer.com";
-const BT_WELL_KNOWN = "https://blocktransfer.com/.well-known";
+const BT_STELLAR_TOML = "https://blocktransfer.com/.well-known/stellar.toml";
 
 const ISSUERLINK_SERVER = "https://test-203277609.us-east-2.elb.amazonaws.com";
 
 module.exports = { BT_ISSUER, USD_ASSETS, 
                    HORIZON_INST, MAX_SEARCH, 
-                   STREET_NAME_ACCOUNTS, MICR_TXT,
-                   BT_API_SERVER, BT_WELL_KNOWN, ISSUERLINK_SERVER };
+                   STREET_NAME_ACCOUNTS,
+                   BT_API_SERVER, BT_STELLAR_TOML, ISSUERLINK_SERVER };

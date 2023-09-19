@@ -4,7 +4,7 @@ const app = express();
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) =>
     fetch(...args));
 const toml = require('toml');
-const { BT_ISSUER, HORIZON_INST, MAX_SEARCH, USD_ASSETS, MICR_TXT, BT_WELL_KNOWN, BT_API_SERVER } = require('./globals');
+const { BT_ISSUER, HORIZON_INST, MAX_SEARCH, USD_ASSETS, BT_STELLAR_TOML, BT_API_SERVER } = require('./globals');
 const { response } = require('express');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
@@ -81,7 +81,6 @@ app.get('/asset-classes/:assetCode', cors(), async (req, res) => {
 
 app.get('/get-top-investors/:assetCode', cors(), async (req, res) => {
     try {
-        let issuer = await getAssetIssuer(req.params.assetCode);
 
         let requestAddr = await getAssetAccountsAddress(req.params.assetCode, issuer);
 
@@ -246,7 +245,7 @@ async function getAssetStats(assetTOML, assetCode) {
 }
 
 async function getAssetTOML(assetCode) {
-    const btStellarResponse = await fetch(BT_WELL_KNOWN + '/stellar.toml');
+    const btStellarResponse = await fetch(BT_STELLAR_TOML);
 
     const btStellarTxt = await btStellarResponse.text();
 
@@ -339,34 +338,14 @@ async function getNextLedgerJSON(ledgerJSON) {
 
 async function getAllPublicKeys() {
     return new Promise((resolve, reject) => {
-        let publicKeys = [];
-        const stream = fs.createReadStream(MICR_TXT, { encoding: 'utf8' });
-        let lineNumber = 1;
+        let url = BT_API_SERVER + "accounts/public-keys/all";
     
-        stream.on('data', (data) => {
-          const lines = data.split('\n');
-    
-          lines.forEach((line) => {
-            if (lineNumber > 1) {
-              let account = line.split('|');
-    
-              if (account[0].length > 0) {
-                publicKeys.push(account[0]);
-              }
-            }
-    
-            lineNumber++;
-          });
-        });
-    
-        stream.on('end', () => {
-            // console.log(publicKeys);
-          resolve(publicKeys); // Resolve the Promise with publicKeys when data processing is complete
-        });
-    
-        stream.on('error', (err) => {
-          reject(err); // Reject the Promise if there is an error reading the file
-        });
+        let response = await fetch(url);
+	    
+        let responseJSON = await response.json();
+		
+		return responseJSON
+		// This could by formatted wrong, but the functionality is updated -JW
     });
 }
 
@@ -560,7 +539,7 @@ async function getActivityAndStatsForAsset(queryAsset, timeframe='max') {
         let usdIssuer = usdAsset.issuer;
 
         let tradesEndpoint = "https://horizon.stellar.org/trades?base_asset_type=credit_alphanum4&base_asset_issuer=" +
-                                issuer + "&base_asset_code=" + queryAsset + 
+                                BT_ISSUER + "&base_asset_code=" + queryAsset + 
                                 "&counter_asset_type=" + usdType + "&counter_asset_issuer=" + usdIssuer + 
                                 "&counter_asset_code=" + usdCode + "&limit=200&order=desc";
 
