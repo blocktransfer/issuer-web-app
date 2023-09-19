@@ -285,9 +285,9 @@ async function getFederationResolvedBalance(federationAddr, assetCode) {
         BT_API_SERVER + '/federation?q=' + federationAddr + '&type=name');
 
     let federationJSON = await federationResp.json();
-    let addr = federationJSON.account_id;
+    let PK = federationJSON.account_id;
 
-    let balance = await getAccountBalance(addr, assetCode);
+    let balance = await getAccountBalance(PK, assetCode);
 
     return balance;
 }
