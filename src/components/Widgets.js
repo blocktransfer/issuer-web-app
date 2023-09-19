@@ -299,7 +299,7 @@ export const HolderListWidget = (props) => {
                   holderName={item.legalName || "undefined"}
                   quantityAndUnits={item.balance || "undefined"}
                   percentOwned={item.balance && props.sharesOutstanding ? (item.balance / props.sharesOutstanding) : "undefined"}
-                  holderAddress={item.address && item.address.street1 ? item.address.street1 : "undefined"}
+                  holderAddress={item.addr && item.addr.street1 ? item.addr.street1 : "undefined"}
                 />
               ))
             }
@@ -349,8 +349,9 @@ export const CircleChartWidget = (props) => {
 export const RegisteredTrendsWidget = (props) => {
   const stateFrequencyMap = {};
   props.investors.forEach((investor) => {
-    if (investor.address && investor.address.subdivision) {
-      const state = investor.address.subdivision;
+	// see changes to citizen field which specify what state a user is a resident of per gov ID 
+    if (investor.addr && investor.addr.subdivision) { // discuss whether this should be state of citizenship or physical residence -JW
+      const state = investor.addr.subdivision;
       stateFrequencyMap[state] = (stateFrequencyMap[state] || 0) + 1;
     }
   });
