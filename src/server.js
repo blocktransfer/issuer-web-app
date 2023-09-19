@@ -4,7 +4,7 @@ const app = express();
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) =>
     fetch(...args));
 const toml = require('toml');
-const { BT_ISSUERS, HORIZON_INST, MAX_SEARCH, USD_ASSETS, MICR_TXT, BT_WELL_KNOWN, BT_API_SERVER } = require('./globals');
+const { BT_ISSUER, HORIZON_INST, MAX_SEARCH, USD_ASSETS, MICR_TXT, BT_WELL_KNOWN, BT_API_SERVER } = require('./globals');
 const { response } = require('express');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
@@ -304,28 +304,9 @@ async function getAccountBalance(addr, assetCode) {
     return shares;
 }
 
-async function getAssetIssuer(queryAsset) {
-    let requestAddr = HORIZON_INST + '/assets?asset_code=' + queryAsset + '&asset_issuer=';
-
-    for (let i in BT_ISSUERS) {
-        let address = BT_ISSUERS[i];
-
-        const assetIssuerResp = await fetch(requestAddr + address);
-        let assetIssuerJSON = await assetIssuerResp.json();
-
-        if (assetIssuerJSON._embedded.records.length > 0) {
-            return address;
-        }
-    }
-
-    throw new Error("Could not find asset " + queryAsset);
-}
-
 async function getAssetAddress(queryAsset) {
-    let issuer = await getAssetIssuer(queryAsset);
-
     return HORIZON_INST + '/assets?asset_code=' 
-                + queryAsset + '&asset_issuer=' + issuer;
+                + queryAsset + '&asset_issuer=' + BT_ISSUER;
 }
 
 async function getAssetAccountsAddress(queryAsset, issuer) {
@@ -502,7 +483,7 @@ async function getActivityAndStatsForAsset(queryAsset, timeframe='max') {
         piiMap[piiItem.PK] = piiItem.legalName;
     }
 
-    piiMap[BT_ISSUERS] = 'BT_ISSUER';
+    piiMap[BT_ISSUER] = 'BT_ISSUER';
 
     // Due to the fact that transfers are recorded on both
     // the source account and destination account ledgers,
@@ -522,7 +503,7 @@ async function getActivityAndStatsForAsset(queryAsset, timeframe='max') {
 
                 if (payments.type == "payment" &&
                     payments.asset_type != "native" &&
-                    BT_ISSUERS.includes(payments.asset_issuer) &&
+                    BT_ISSUER == payments.asset_issuer &&
                     payments.asset_code == queryAsset) {
 
                     let paymentDate = new Date(payments.created_at);
