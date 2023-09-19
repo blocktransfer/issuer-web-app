@@ -282,7 +282,7 @@ async function getAssetTOML(assetCode) {
 
 async function getFederationResolvedBalance(federationAddr, assetCode) {
     const federationResp = await fetch(
-        'https://stellarid.io/federation/?q=' + federationAddr + '&type=name');
+        BT_API_SERVER + '/federation?q=' + federationAddr + '&type=name');
 
     let federationJSON = await federationResp.json();
     let addr = federationJSON.account_id;
