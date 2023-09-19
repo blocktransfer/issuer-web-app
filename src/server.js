@@ -174,8 +174,14 @@ app.get('/get-activity/:assetCode', cors(), async (req, res) => {
 });
 
 async function getAssetStats(assetTOML, assetCode) {
-    let sharesInDTC = await getFederationResolvedBalance('cede*blocktransfer.io', assetCode);
-    let treasuryShares = await getFederationResolvedBalance(assetCode + '*treasury.holdings', assetCode);
+    let sharesInDTC = await getFederationResolvedBalance('cede*blocktransfer.com', assetCode);
+    let treasuryShares = await getFederationResolvedBalance(assetCode + '*treasury.holdings', assetCode); // depricated
+	// we should talk about this
+	// the new schema is much simpler I think
+	// you can just query the user index (federation) for the issuer CIK
+	// it will return all associated accounts
+	// LMK exactly what the need is here, and I'll write a Lambda for it 
+	// rn I will configure it to take a company CIK as input and then return all associated accounts with type
 
     let assetAddr = await getAssetAddress(assetCode);
 
@@ -197,14 +203,16 @@ async function getAssetStats(assetTOML, assetCode) {
     }
 
     let restrictedShares = explicitRestrictedShares + implicitRestrictedShares;
-
+    
+	// see note above
     let dsppShares = await getFederationResolvedBalance(assetCode + '*authorized.DSPP.holdings', assetCode);
     let pendingIPOShares = await getFederationResolvedBalance(assetCode + '*initial.offering.holdings', assetCode);
     let regAShares = await getFederationResolvedBalance(assetCode + '*reg.a.offering.holdings', assetCode);
     let regCFShares = await getFederationResolvedBalance(assetCode + '*reg.cf.offering.holdings', assetCode);
     let privatePlacementShares = await getFederationResolvedBalance(assetCode + '*reg.d.offering.holdings', assetCode);
     let shelfShares = await getFederationResolvedBalance(assetCode + '*shelf.offering.holdings', assetCode);
-
+    // everything outside of treasury shares will not be included in outstanding since pending distribution -JW
+	
     let reservedShares = dsppShares + pendingIPOShares + regAShares + regCFShares + privatePlacementShares + shelfShares;
 
     let stock = assetTOML.STOCKS.find((s) => s.code == assetCode);
@@ -365,10 +373,8 @@ async function getAllPublicKeys() {
 async function requestAssetAccounts(queryAsset) {
     let currPublicKeys = [];
 
-    let issuer = await getAssetIssuer(queryAsset);
-
     let url = HORIZON_INST + "/accounts?asset=" 
-        + queryAsset + ":" + issuer + "&" + MAX_SEARCH;
+        + queryAsset + ":" + BT_ISSUER + "&" + MAX_SEARCH;
     
     let response = await fetch(url);
 
@@ -483,7 +489,7 @@ async function getActivityAndStatsForAsset(queryAsset, timeframe='max') {
         piiMap[piiItem.PK] = piiItem.legalName;
     }
 
-    piiMap[BT_ISSUER] = 'BT_ISSUER';
+    piiMap[BT_ISSUER] = 'BT_ISSUER'; // this is redundant wiht one Issuer, but I'm not sure exactly how to simplify atm -JW
 
     // Due to the fact that transfers are recorded on both
     // the source account and destination account ledgers,

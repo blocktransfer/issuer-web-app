@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Col, Row } from '@themesberg/react-bootstrap';
 import { HolderListWidget, RegisteredTrendsWidget } from '../components/Widgets';
-import { BT_ISSUER_PORTAL_SERVER } from '../globals';
+import { ISSUERLINK_SERVER } from '../globals';
 
 export default function Investors() {
     const [ classesInfo, setClassesInfo ] = useState([]);
@@ -11,7 +11,7 @@ export default function Investors() {
     const assetCode = 'DEMO';
 
     useEffect(() => {
-        fetch(BT_ISSUER_PORTAL_SERVER + `/asset-class-data/${assetCode}`)
+        fetch(ISSUERLINK_SERVER + `/asset-class-data/${assetCode}`)
             .then(results => results.json())
             .then(data => {
                 // console.log(data);
@@ -24,7 +24,7 @@ export default function Investors() {
 
     useEffect(() => {
         const promises = classesInfo.map(assetClass => {
-            return fetch(BT_ISSUER_PORTAL_SERVER + `/get-top-investors/${assetClass.code}`)
+            return fetch(ISSUERLINK_SERVER + `/get-top-investors/${assetClass.code}`)
                 .then(results => {
                     if (!results.ok) {
                         throw new Error(results.status);
