@@ -126,14 +126,24 @@ app.get('/get-top-investors/:assetCode', cors(), async (req, res) => {
         // Merge legal names with investor balances
         ledgerBalances.forEach(investor => {
             const piiInfo = piiJSON.find(pii => pii.PK === investor.account_id);
-            if (piiInfo && piiInfo.legalName) {
+            
+			
+			
+			// the only time there's not a legalName is when it's a child account
+			// potentially do a recursive lookup of the parent account here 
+			// and link the shares to them 
+			// the child account will have just the PK, parentAccID, and type (of child account)
+			// could be done as a record under the parent account (query federation for parentAccID PK)
+			if (piiInfo && piiInfo.legalName) {
                 investor.legalName = piiInfo.legalName;
             }
-
-            if (piiInfo && piiInfo.address) {
-                investor.address = piiInfo.address;
+            
+			// same, required for all accounts except child accs ('child' acc could be something else like a 401k or ira)
+            if (piiInfo && piiInfo.addr) {
+                investor.address = piiInfo.addr;
             }
-
+			
+            // again, only for full accounts
             if (piiInfo && piiInfo.citizen) {
                 investor.citizen = piiInfo.citizen;
             }
@@ -253,7 +263,7 @@ async function getAssetTOML(assetCode) {
 
     const asset = btStellarTOML.CURRENCIES.find((c) => c.code == assetCode);
 
-    const tomlLink = asset.attestation_of_reserve;
+    const tomlLink = asset.attestation_of_reserve; // not sure what you're using this for in terms of front-end displaying things, but it's depricated
 
     const apiResponse = await fetch(tomlLink);
 
@@ -267,13 +277,15 @@ async function getAssetTOML(assetCode) {
     apiResponseTxt = apiResponseTxt.replace("ir.email", "ir-email");
     apiResponseTxt = apiResponseTxt.replace("ir.phone", "ir-phone");
 
-    apiResponseTxt = apiResponseTxt.replace("blue_sky.states", "blue_sky-states");
-    apiResponseTxt = apiResponseTxt.replace("blue_sky.exchange", "blue_sky-exchange");
+    apiResponseTxt = apiResponseTxt.replace("blue_sky.states", "blue_sky-states"); // I am not entirely sure that we need programatic access to this
+    apiResponseTxt = apiResponseTxt.replace("blue_sky.exchange", "blue_sky-exchange"); // It's a lot of legal stuff... will update asap
 
-    apiResponseTxt = apiResponseTxt.replace("jurisdiction.country", "jurisdiction-country");
-    apiResponseTxt = apiResponseTxt.replace("jurisdiction.subdivision", "jurisdiction-subdivision");
+    // this was moved to general federation, just get the companies main (treasury) acccount which is CIK*blocktransfer.com
+    // apiResponseTxt = apiResponseTxt.replace("jurisdiction.ctry", "jurisdiction-country");
+    // apiResponseTxt = apiResponseTxt.replace("jurisdiction.subd", "jurisdiction-subdivision");
 
-    apiResponseTxt = apiResponseTxt.replace("reg.d.506b.offering", "reg-d-506b-offering");
+    apiResponseTxt = apiResponseTxt.replace("reg.d.506b.offering", "reg-d-506b-offering"); // [ACCOUNTS] moved to generalized federation
+	// will set up an endpoint you can get all the accounts for an issuer by querying their cik
 
     const assetTOML = toml.parse(apiResponseTxt);
 

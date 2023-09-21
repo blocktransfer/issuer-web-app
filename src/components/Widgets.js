@@ -350,8 +350,8 @@ export const RegisteredTrendsWidget = (props) => {
   const stateFrequencyMap = {};
   props.investors.forEach((investor) => {
 	// see changes to citizen field which specify what state a user is a resident of per gov ID 
-    if (investor.addr && investor.addr.subdivision) { // discuss whether this should be state of citizenship or physical residence -JW
-      const state = investor.addr.subdivision;
+    if (investor.addr && investor.addr.subd) { // discuss whether this should be state of citizenship or physical residence -JW
+      const state = investor.addr.subd;
       stateFrequencyMap[state] = (stateFrequencyMap[state] || 0) + 1;
     }
   });
@@ -368,7 +368,7 @@ export const RegisteredTrendsWidget = (props) => {
 
   const holderTypeData = [
     { id: 1, label: "US Individual", value: 80, color: "secondary", icon: null },
-    { id: 2, label: "US Corporate", value: 10, color: "tertiary", icon: null },
+    { id: 2, label: "US Corporate", value: 10, color: "tertiary", icon: null }, // can be found from "investor.type"
     { id: 3, label: "US Other", value: 10, color: "primary", icon: null }
   ];
 
